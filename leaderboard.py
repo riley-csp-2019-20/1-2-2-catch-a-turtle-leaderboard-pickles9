@@ -22,7 +22,7 @@ def load_leaderboard(file_name, leader_names, leader_scores):
     while (line[index] != ","):
       leader_name = leader_name + line[index] 
       index = index + 1
-    print("leader name is", leader_name) 
+    #print("leader name is", leader_name) 
     # TODO 2: add the leader name to the list
     leader_names.append(leader_name)
     
@@ -30,44 +30,48 @@ def load_leaderboard(file_name, leader_names, leader_scores):
     while (line[index + 1] != ("\n")):
       leader_score = leader_score + line[index + 1] 
       index = index + 1
-    print("leader score is", leader_score)
+    #print("leader score is", leader_score)
     
     # TODO 4: add the player score to the list
-
+    leader_scores.append(int(leader_score))
 
   leaderboard_file.close()
-load_leaderboard("a122_leaderboard.txt", [],[]) #delete this line later
+# load_leaderboard("a122_leaderboard.txt", [],[]) #delete this line later
 
 # update leaderboard by inserting the current player and score to the list at the correct position
 def update_leaderboard(file_name, leader_names, leader_scores, player_name, player_score):
 
   leader_index = 0
   # TODO 5: loop through all the scores in the existing leaderboard list
-  '''
-    while ():
+
+  while (leader_index < len(leader_scores)):
     # TODO 6: check if this is the position to insert new score at
-    if ():
+    if (player_score > leader_scores[leader_index]):
       break
     else:
       leader_index = leader_index + 1
-  '''
+
   # TODO 7: insert the new player and score at the appropriate position
-
-
+  leader_names.insert(leader_index, player_name)
+  leader_scores.insert(leader_index, player_score)
   # TODO 8: keep both lists at 5 elements only (top 5 players)
-
+  if (len(leader_names) > 5):
+    leader_names.pop()
+    leader_scores.pop()
   
   # store the latest leaderboard back in the file
   leaderboard_file = open(file_name, "w")  # this mode opens the file and erases its contents for a fresh start
   leader_index = 0
   # TODO 9: loop through all the leaderboard elements and write them to the file
-  '''
-    while ():
+  
+  while (leader_index < len(leader_names)):
     leaderboard_file.write(leader_names[leader_index] + "," + str(leader_scores[leader_index]) + "\n")
     leader_index = leader_index + 1
-  '''
-  leaderboard_file.close()
   
+  # print(leader_names)
+  # print(leader_scores)
+  leaderboard_file.close()
+# update_leaderboard("a122_leaderboard.txt", ["bill", "Nye", "bill", "bill"], [10, 9, 7, 6], "thescienceguy" , 8)
 
 # draw leaderboard and display a message to player
 def draw_leaderboard(leader_names, leader_scores, high_scorer, turtle_object, player_score):
@@ -86,25 +90,29 @@ def draw_leaderboard(leader_names, leader_scores, high_scorer, turtle_object, pl
     turtle_object.write(str(leader_index + 1) + "\t" + leader_names[leader_index] + "\t" + str(leader_scores[leader_index]), font=font_setup)
     turtle_object.penup()
     turtle_object.goto(-200,int(turtle_object.ycor())-50)
-    turtle_object.down()
+    #turtle_object.down()
     leader_index = leader_index + 1
 
   # Display message about player making/not making leaderboard based on high_scorer
+  turtle_object.goto(0,int(turtle_object.ycor()))
   if (high_scorer):
-    turtle_object.write("Congratulations! You made the leaderboard!", font=font_setup)
+    turtle_object.write("Congratulations! You made the leaderboard!", align="center", font=font_setup)
   else:
-    turtle_object.write("Sorry, you didn't make the leaderboard. Maybe next time!", font=font_setup)
+    turtle_object.write("Sorry, you didn't make the leaderboard. Maybe next time!", align="center", font=font_setup)
 
   # move turtle to a new line
   turtle_object.penup()
-  turtle_object.goto(-200,int(turtle_object.ycor())-50)
+  turtle_object.goto(0,int(turtle_object.ycor())-50)
   turtle_object.pendown()
   
   # TODO 10: Display a gold/silver/bronze message if player earned a gold/silver/or bronze medal; display nothing if no medal
-  '''
-  if ():
-    turtle_object.write("You earned a bronze medal!", font=font_setup)
-    turtle_object.write("You earned a silver medal!", font=font_setup)
-    turtle_object.write("You earned a gold medal!", font=font_setup)
-  '''
+  
+  if (player_score >= bronze_score and player_score < silver_score):
+    turtle_object.write("You earned a bronze medal!",align="center", font=font_setup)
+  elif(player_score >= silver_score and player_score < gold_score):
+    turtle_object.write("You earned a silver medal!",align="center", font=font_setup)
+  elif(player_score >= gold_score):
+    turtle_object.write("You earned a gold medal!",align="center", font=font_setup)
+  else:
+    turtle_object.write("No medal for you!",align="center", font=font_setup)
   

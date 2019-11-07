@@ -11,7 +11,7 @@ speed = 0
 size = 2
 score = 0
 font = ("Arial", 70, "normal")
-timer = 5
+timer = 17 # change number to 30 when done
 counter_interval = 1000   #1000 represents 1 second
 color_list = ["red", "green", "blue", "brown", "black"]
 wn = turtle.Screen()
@@ -63,10 +63,11 @@ def countdown():
   global timer
   counter.clear()
   if timer <= 0:
-    counter.goto(0,0)
+    game_over()
+    counter.goto(0,200)
     counter.write("Time's Up", align="center", font=font)
     manage_leaderboard()
-    game_over()
+    suprise_mechanic()
   else:
     counter.write("Timer: " + str(timer), align="center", font=font)
     timer -= 1
@@ -78,13 +79,6 @@ def game_over():
     dead.clear()
     dead.goto(0, 9000)
 
-    #while True:
-    #  wn.bgcolor("red")
-    #  time.sleep(1/60)
-    #  wn.bgcolor("green")
-    #  time.sleep(1/60)
-    #  wn.bgcolor("blue")
-    #  time.sleep(1/60)
 
 # manages the leaderboard for top 5 scorers
 def manage_leaderboard():
@@ -105,6 +99,14 @@ def manage_leaderboard():
   else:
     lb.draw_leaderboard(leader_names_list, leader_scores_list, False, scoreman, score)
 
+def suprise_mechanic():
+  while True:
+    wn.bgcolor("red")
+    time.sleep(1/60)
+    wn.bgcolor("green")
+    time.sleep(1/60)
+    wn.bgcolor("blue")
+    time.sleep(1/60)
 #-----events----------------
 dead.onclick(dead_clicked)
 
